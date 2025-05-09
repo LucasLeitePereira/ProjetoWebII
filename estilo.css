@@ -1,0 +1,81 @@
+/* Reset básico */
+* {
+    font-family: 'Wellfleet', cursive; 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background: url('/videoBack/DonkeyKong.gif');
+    background-size: cover;
+  }
+
+  #background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+ 
+ .logo {
+  position: absolute;
+  top: 80px;             /* mantém a logo no topo */
+  left: 50%;              /* centraliza horizontalmente */
+  transform: translateX(-50%);
+  width: 800px;           /* Aumente o tamanho aqui */
+  max-width: 95%;         /* Garante responsividade */
+  z-index: 2;
+}
+
+p{
+  text-align: center;
+}
+
+.menu {
+  position: absolute;
+  top: 400px; /* ajuste a posição vertical */
+  left: 200px; /* agora alinhado à esquerda */
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* espaço entre os botões */
+  z-index: 2;
+}
+
+.btn {
+  background-color: #e24b3c;
+  color: black;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 19.2px; 
+  padding: 6.4px 25.5px; 
+  border: 3.8px solid #ffc14c; 
+  border-radius: 12.75px; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 275px; /* largura maior */
+  box-shadow: 6.4px 6.4px #8b2f2f; 
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn img {
+  width: 70px; 
+  height: 52px; 
+  margin-left: 5px;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .btn {
+    width: 90%;
+    font-size: 11.7px; 
+  }
+}
