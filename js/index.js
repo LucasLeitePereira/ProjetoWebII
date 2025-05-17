@@ -9,16 +9,18 @@ const layersData = {
    l_New_Layer_1: l_New_Layer_1,
    l_New_Layer_2: l_New_Layer_2,
    l_New_Layer_3: l_New_Layer_3,
-   l_New_Layer_8: l_New_Layer_8,
-   l_New_Layer_6: l_New_Layer_6,
+   l_New_Layer_4: l_New_Layer_4,
+   l_New_Layer_5: l_New_Layer_5,
+   l_New_Layer_9: l_New_Layer_9,
 };
 
 const tilesets = {
   l_New_Layer_1: { imageUrl: './images/decorations.png', tileSize: 16 },
-  l_New_Layer_2: { imageUrl: './images/tileset.png', tileSize: 16 },
-  l_New_Layer_3: { imageUrl: './images/decorations.png', tileSize: 16 },
-  l_New_Layer_8: { imageUrl: './images/ba03be29-a52c-4128-b9ee-3aea2564fc00.png', tileSize: 16 },
-  l_New_Layer_6: { imageUrl: './images/0b17fa6d-bd59-4c2e-86bb-2b8428911e00.png', tileSize: 16 },
+  l_New_Layer_2: { imageUrl: './images/decorations.png', tileSize: 16 },
+  l_New_Layer_3: { imageUrl: './images/tileset.png', tileSize: 16 },
+  l_New_Layer_4: { imageUrl: './images/decorations.png', tileSize: 16 },
+  l_New_Layer_5: { imageUrl: './images/decorations.png', tileSize: 16 },
+  l_New_Layer_9: { imageUrl: './images/4be5a00f-86ca-41be-2c2f-964b95622100.png', tileSize: 16 },
 };
 
 
