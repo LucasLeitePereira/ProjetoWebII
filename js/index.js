@@ -117,7 +117,7 @@ const renderStaticLayers = async () => {
 const player = new Player({
   x: 100,
   y: 100,
-  size: 16,
+  size: 32,
   velocity: { x: 0, y: 0 },
 })
 
@@ -134,6 +134,13 @@ const keys = {
 }
 
 let lastTime = performance.now()
+const camera = {
+  x: 0,
+  y: 0,
+}
+
+const SCROLL_POST_RIGHT = 550
+
 function animate(backgroundCanvas) {
   // Calculate delta time
   const currentTime = performance.now()
@@ -144,12 +151,20 @@ function animate(backgroundCanvas) {
   player.handleInput(keys)
   player.update(deltaTime, collisionBlocks)
 
+  // Track scroll post distance
+  if (player.x > SCROLL_POST_RIGHT) {
+    const scrollPostDistance = player.x - SCROLL_POST_RIGHT
+    camera.x = scrollPostDistance
+  }
+  
   // Render scene
   c.save()
   c.scale(dpr, dpr)
+  c.translate(-camera.x, camera.y)
   c.clearRect(0, 0, canvas.width, canvas.height)
   c.drawImage(backgroundCanvas, 0, 0)
   player.draw(c)
+  c.fillRect(SCROLL_POST_RIGHT, 200, 10, 100)
   c.restore()
 
   requestAnimationFrame(() => animate(backgroundCanvas))

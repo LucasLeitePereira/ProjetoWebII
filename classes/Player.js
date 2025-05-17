@@ -1,5 +1,5 @@
 const X_VELOCITY = 200
-const JUMP_POWER = 250
+const JUMP_POWER = 300
 const GRAVITY = 580
 
 class Player {
@@ -10,16 +10,79 @@ class Player {
     this.height = size
     this.velocity = velocity
     this.isOnGround = false
+    this.isImageLoaded = false
+    this.image = new Image()
+    this.image.onload = () => {
+      this.isImageLoaded = true
+    }
+    this.image.src = '../images/Spritesheet.png'
+    this.elapsedTime = 0
+    this.currentFrame = 0
+    this.sprites = {
+      idle: {
+        x: 0,
+        y: 0, 
+        width: 33,
+        height: 32,
+        frames: 4,
+      },
+      run: {
+        x: 0,
+        y: 32, 
+        width: 33,
+        height: 32,
+        frames: 6,
+      },
+      jump: {
+        x: 0,
+        y: 32 * 5, 
+        width: 33,
+        height: 32,
+        frames: 1,
+      },
+      fall: {
+        x: 33,
+        y: 32 * 5, 
+        width: 33,
+        height: 32,
+        frames: 1,
+      },
+
+    }
+    this.currentSprite = this.sprites.idle
+
   }
 
   draw(c) {
     // Red square debug code
     c.fillStyle = 'rgba(255, 0, 0, 0.5)'
     c.fillRect(this.x, this.y, this.width, this.height)
+     if (this.isImageLoaded === true) {
+        c.drawImage(
+          this.image, 
+          this.currentSprite.x + this.currentSprite.width * this.currentFrame, 
+          this.currentSprite.y, 
+          this.currentSprite.width, 
+          this.currentSprite.height,
+          this.x, 
+          this.y,
+          this.width,
+          this.height,
+        )
+     }
   }
 
   update(deltaTime, collisionBlocks) {
     if (!deltaTime) return
+
+    // Updating animatio frames
+    this.elapsedTime += deltaTime
+    const secondsInterval = 0.1
+    if (this.elapsedTime > secondsInterval) {
+      this.currentFrame = (this.currentFrame + 1) % this.currentSprite.frames
+      this.elapsedTime -= secondsInterval
+    }
+
     this.applyGravity(deltaTime)
 
     // Update horizontal position and check collisions
@@ -32,6 +95,44 @@ class Player {
     // Update vertical position and check collisions
     this.updateVerticalPosition(deltaTime)
     this.checkForVerticalCollisions(collisionBlocks)
+
+    this.switchSprites()
+  }
+
+  switchSprites() {
+    if (
+      this.isOnGround && 
+      this.velocity.x === 0 &&
+      this.currentSprite !== this.sprites.idle
+    ) {
+      // Idle
+      this.currentFrame = 0
+      this.currentSprite = this.sprites.idle
+    } else if (
+      this.isOnGround && 
+      this.velocity.x !== 0 &&
+      this.currentSprite !== this.sprites.run
+    ) {
+        // Run
+        this.currentFrame = 0
+        this.currentSprite = this.sprites.run
+    } else if (
+      !this.isOnGround && 
+      this.velocity.y < 0 && 
+      this.currentSprite !== this.sprites.jump
+    ) {
+      // Jump
+      this.currentFrame = 0
+      this.currentSprite = this.sprites.jump
+    } else if (
+      !this.isOnGround && 
+      this.velocity.y > 0 && 
+      this.currentSprite !== this.sprites.fall
+    ) {
+      // Fall
+      this.currentFrame = 0
+      this.currentSprite = this.sprites.fall
+    }  
   }
 
   jump() {
