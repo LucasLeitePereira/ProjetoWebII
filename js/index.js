@@ -128,11 +128,19 @@ const renderStaticLayers = async (layersData) => {
 
 // Change xy coordinates to move player's default position
 const player = new Player({
-  x: 0,
-  y: 0,
+  x: 82,
+  y: 751,
   size: 32,
   velocity: { x: 0, y: 0 },
 })
+
+const oposum = new Oposum({
+  x: 200,
+  y: 751,
+  size: 32,
+})
+
+
 
 const keys = {
   w: {
@@ -171,6 +179,13 @@ function animate(backgroundCanvas) {
   player.handleInput(keys)
   player.update(deltaTime, collisionBlocks)
 
+  // Update oposum position
+  oposum.update(deltaTime, collisionBlocks)
+
+  if (checkCollisios(player, oposum)) {
+    player.velocity.y = -200
+  }
+
   // Track scroll post distance
   if (player.x > SCROLL_POST_RIGHT) {
     const scrollPostDistance = player.x - SCROLL_POST_RIGHT
@@ -200,6 +215,7 @@ function animate(backgroundCanvas) {
   // c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
   // c.fillRect(0, SCROLL_POST_BOTTOM, 1000, 10)
   player.draw(c)
+  oposum.draw(c)
   c.restore()
 
   requestAnimationFrame(() => animate(backgroundCanvas))
