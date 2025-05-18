@@ -1,37 +1,50 @@
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  vertical-align: baseline;
-}
-body {
-  background: black;
-  margin: 0;
-}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
 
-canvas {
-  width: 1024px;
-  height: 576px;
-}
-</style>
-<canvas style="image-rendering: pixelated"></canvas>
-<script src="./data/l_New_Layer_1.js"></script>
-<script src="./data/l_Floresta.js"></script>
-<script src="./data/l_New_Layer_5.js"></script>
-<script src="./data/l_Terreno.js"></script>
-<script src="./data/l_Casa.js"></script>
-<script src="./data/l_Espinhos.js"></script>
-<script src="./data/l_Itens.js"></script>
-<script src="./data/l_Inimigos.js"></script>
-<script src="./data/l_Colisores.js"></script>
-<script src="./data/collisions.js"></script>
-<script src="./js/utils.js"></script>
-<script src="./classes/CollisionBlock.js"></script>
-<script src="./classes/Platform.js"></script>
-<script src="./classes/Player.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font: inherit;
+        vertical-align: baseline;
+      }
+      body {
+        background: black;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+      }
 
-<script src="./js/index.js"></script>
-<script src="./js/eventListeners.js"></script>
+      canvas {
+        width: 1024px;
+        height: 576px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas style="image-rendering: pixelated"></canvas>
+    <script src="./data/l_New_Layer_1.js"></script>
+    <script src="./data/l_Floresta.js"></script>
+    <script src="./data/l_New_Layer_5.js"></script>
+    <script src="./data/l_Terreno.js"></script>
+    <script src="./data/l_Casa.js"></script>
+    <script src="./data/l_Espinhos.js"></script>
+    <script src="./data/l_Itens.js"></script>
+    <script src="./data/l_Inimigos.js"></script>
+    <script src="./data/l_Colisores.js"></script>
+    <script src="./data/collisions.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./classes/CollisionBlock.js"></script>
+    <script src="./classes/Platform.js"></script>
+    <script src="./classes/Player.js"></script>
+
+    <script src="./js/index.js"></script>
+    <script src="./js/eventListeners.js"></script>
+  </body>
+</html>

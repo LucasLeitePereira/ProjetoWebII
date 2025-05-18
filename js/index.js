@@ -121,9 +121,9 @@ const renderStaticLayers = async () => {
 
 // Change xy coordinates to move player's default position
 const player = new Player({
-  x: 100,
-  y: 100,
-  size: 16,
+  x: 0,
+  y: 0,
+  size: 32,
   velocity: { x: 0, y: 0 },
 })
 
@@ -140,6 +140,17 @@ const keys = {
 }
 
 let lastTime = performance.now()
+
+const SCROLL_POST_RIGHT = 600
+const SCROLL_POST_TOP = 350
+const SCROLL_POST_BOTTOM = 480
+
+const camera = {
+  x: 0,
+  y: 0,
+}
+
+
 function animate(backgroundCanvas) {
   // Calculate delta time
   const currentTime = performance.now()
@@ -150,11 +161,32 @@ function animate(backgroundCanvas) {
   player.handleInput(keys)
   player.update(deltaTime, collisionBlocks)
 
+  // Track scroll post distance
+  if (player.x > SCROLL_POST_RIGHT) {
+    const scrollPostDistance = player.x - SCROLL_POST_RIGHT
+    camera.x = scrollPostDistance
+  }
+
+  if (player.y < SCROLL_POST_TOP && camera.y > 0) {
+    const scrollPostDistance = SCROLL_POST_TOP - player.y
+    camera.y = scrollPostDistance
+  }
+
+  if (player.y > SCROLL_POST_BOTTOM) {
+    const scrollPostDistance = player.y - SCROLL_POST_BOTTOM  
+    camera.y = - scrollPostDistance
+  }
+
   // Render scene
   c.save()
   c.scale(dpr, dpr)
+  c.translate(-camera.x, camera.y)
   c.clearRect(0, 0, canvas.width, canvas.height)
   c.drawImage(backgroundCanvas, 0, 0)
+  // c.fillStyle = 'rgba(255, 0, 0, 0.5)'
+  // c.fillRect(SCROLL_POST_RIGHT, 0, 10, 1000)
+  // c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
+  // c.fillRect(0, SCROLL_POST_BOTTOM, 1000, 10)
   player.draw(c)
   c.restore()
 
