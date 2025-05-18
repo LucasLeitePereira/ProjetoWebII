@@ -7,20 +7,26 @@ canvas.height = 576 * dpr
 
 const layersData = {
    l_New_Layer_1: l_New_Layer_1,
-   l_New_Layer_2: l_New_Layer_2,
-   l_New_Layer_3: l_New_Layer_3,
-   l_New_Layer_4: l_New_Layer_4,
+   l_Floresta: l_Floresta,
    l_New_Layer_5: l_New_Layer_5,
-   l_New_Layer_9: l_New_Layer_9,
+   l_Terreno: l_Terreno,
+   l_Casa: l_Casa,
+   l_Espinhos: l_Espinhos,
+   l_Itens: l_Itens,
+   l_Inimigos: l_Inimigos,
+   l_Colisores: l_Colisores,
 };
 
 const tilesets = {
   l_New_Layer_1: { imageUrl: './images/decorations.png', tileSize: 16 },
-  l_New_Layer_2: { imageUrl: './images/decorations.png', tileSize: 16 },
-  l_New_Layer_3: { imageUrl: './images/tileset.png', tileSize: 16 },
-  l_New_Layer_4: { imageUrl: './images/decorations.png', tileSize: 16 },
-  l_New_Layer_5: { imageUrl: './images/decorations.png', tileSize: 16 },
-  l_New_Layer_9: { imageUrl: './images/4be5a00f-86ca-41be-2c2f-964b95622100.png', tileSize: 16 },
+  l_Floresta: { imageUrl: './images/decorations.png', tileSize: 16 },
+  l_New_Layer_5: { imageUrl: './images/tileset.png', tileSize: 16 },
+  l_Terreno: { imageUrl: './images/tileset.png', tileSize: 16 },
+  l_Casa: { imageUrl: './images/decorations.png', tileSize: 16 },
+  l_Espinhos: { imageUrl: './images/decorations.png', tileSize: 16 },
+  l_Itens: { imageUrl: './images/235acecb-61d8-4f9b-4f6c-8995c1930e00.png', tileSize: 16 },
+  l_Inimigos: { imageUrl: './images/decorations.png', tileSize: 16 },
+  l_Colisores: { imageUrl: './images/decorations.png', tileSize: 16 },
 };
 
 
@@ -117,7 +123,7 @@ const renderStaticLayers = async () => {
 const player = new Player({
   x: 100,
   y: 100,
-  size: 32,
+  size: 16,
   velocity: { x: 0, y: 0 },
 })
 
@@ -134,13 +140,6 @@ const keys = {
 }
 
 let lastTime = performance.now()
-const camera = {
-  x: 0,
-  y: 0,
-}
-
-const SCROLL_POST_RIGHT = 550
-
 function animate(backgroundCanvas) {
   // Calculate delta time
   const currentTime = performance.now()
@@ -151,20 +150,12 @@ function animate(backgroundCanvas) {
   player.handleInput(keys)
   player.update(deltaTime, collisionBlocks)
 
-  // Track scroll post distance
-  if (player.x > SCROLL_POST_RIGHT) {
-    const scrollPostDistance = player.x - SCROLL_POST_RIGHT
-    camera.x = scrollPostDistance
-  }
-  
   // Render scene
   c.save()
   c.scale(dpr, dpr)
-  c.translate(-camera.x, camera.y)
   c.clearRect(0, 0, canvas.width, canvas.height)
   c.drawImage(backgroundCanvas, 0, 0)
   player.draw(c)
-  c.fillRect(SCROLL_POST_RIGHT, 200, 10, 100)
   c.restore()
 
   requestAnimationFrame(() => animate(backgroundCanvas))
