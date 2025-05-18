@@ -211,11 +211,11 @@ function animate(backgroundCanvas) {
   c.drawImage(oceanBackgroundCanvas, camera.x *0.32, 0)
   c.drawImage(brambleBackgroundCanvas, camera.x *0.16, 0)
   c.drawImage(backgroundCanvas, 0, 0)
-  c.fillStyle = 'rgba(255, 0, 0, 0.5)'
-  c.fillRect(SCROLL_POST_RIGHT, 0, 10, 1000)
-  c.fillRect(SCROLL_POST_LEFT, 0, 10, 1000)
-  c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
-  c.fillRect(0, SCROLL_POST_BOTTOM, 1000, 10)
+  // c.fillStyle = 'rgba(255, 0, 0, 0.5)'
+  // c.fillRect(SCROLL_POST_RIGHT, 0, 10, 1000)
+  // c.fillRect(SCROLL_POST_LEFT, 0, 10, 1000)
+  // c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
+  // c.fillRect(0, SCROLL_POST_BOTTOM, 1000, 10)
   player.draw(c)
   oposum.draw(c)
   c.restore()
