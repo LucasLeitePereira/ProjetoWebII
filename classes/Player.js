@@ -30,7 +30,7 @@ class Player {
         x: 0,
         y: 32,
         width: 33,
-        height: 32,
+        height: 30,
         frames: 6,
       },
       jump: {
