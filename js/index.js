@@ -136,7 +136,7 @@ const player = new Player({
   velocity: { x: 0, y: 0 },
 });
 
-let oposums = []
+let oposums = [];
 
 oposums = [
   new Oposum({
@@ -175,8 +175,7 @@ oposums = [
     width: 32,
     height: 32,
   }),
-
-]
+];
 
 const sprites = [];
 
@@ -219,31 +218,38 @@ function animate(backgroundCanvas) {
 
   // Update oposum position
   for (let i = oposums.length - 1; i >= 0; i--) {
-    const oposum = oposums[i]
-    oposum.update(deltaTime, collisionBlocks)
+    const oposum = oposums[i];
+    oposum.update(deltaTime, collisionBlocks);
 
     // Jump on enemy
-    if (checkCollisios(player, oposum)) {
-      player.velocity.y = -200
-      sprites.push (
-        new Sprite({
-          x: oposum.x,
-          y: oposum.y,
-          width: 32,
-          height: 32,
-          imageSrc: "../images/enemy-deadth.png",
-          spriteCropbox: {
-            x: 0,
-            y: 0,
-            width: 40,
-            height: 41,
-            frames: 6 
-          },
-        }),
+    const collisionDirection = checkCollisions(player, oposum);
+    if (collisionDirection) {
+      if (collisionDirection === "bottom" && !player.isOnGround) {
+        player.velocity.y = -200;
+        sprites.push(
+          new Sprite({
+            x: oposum.x,
+            y: oposum.y,
+            width: 32,
+            height: 32,
+            imageSrc: "../images/enemy-deadth.png",
+            spriteCropbox: {
+              x: 0,
+              y: 0,
+              width: 40,
+              height: 41,
+              frames: 6,
+            },
+          })
+        );
 
-      )
-
-      oposums.splice(i, 1)
+        oposums.splice(i, 1);
+      } else if (
+        collisionDirection === "left" ||
+        collisionDirection === "right"
+      ) {
+        player.setIsInvincible();
+      }
     }
   }
   for (let i = sprites.length - 1; i >= 0; i--) {
@@ -251,11 +257,9 @@ function animate(backgroundCanvas) {
     sprite.update(deltaTime);
 
     if (sprite.iteration === 1) {
-      sprites.splice(i, 1)
+      sprites.splice(i, 1);
     }
   }
-
-  
 
   // Track scroll post distance
   if (player.x > SCROLL_POST_RIGHT && player.x < SCROLL_POST_LEFT) {
@@ -289,13 +293,13 @@ function animate(backgroundCanvas) {
   player.draw(c);
 
   for (let i = oposums.length - 1; i >= 0; i--) {
-    const oposum = oposums[i]
-    oposum.draw(c)
+    const oposum = oposums[i];
+    oposum.draw(c);
   }
 
   for (let i = sprites.length - 1; i >= 0; i--) {
-    const sprite = sprites[i]
-    sprite.draw(c)
+    const sprite = sprites[i];
+    sprite.draw(c);
   }
   c.restore();
 
