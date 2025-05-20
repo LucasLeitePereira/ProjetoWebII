@@ -255,6 +255,48 @@ function init() {
   oposums = [
     new Oposum({
       x: 200,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 200,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 400,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 600,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 800,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 1000,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 1200,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 200,
       y: 751,
       width: 32,
       height: 32,
@@ -289,6 +331,7 @@ function init() {
       width: 32,
       height: 32,
     }),
+    
   ]
 
   sprites = []
@@ -479,4 +522,5 @@ const startRendering = async () => {
   }
 };
 
+init()
 startRendering();
