@@ -131,7 +131,7 @@ const renderStaticLayers = async (layersData) => {
 // Change xy coordinates to move player's default position
 let player = new Player({
   x: 35,
-  y: 447,
+  y: 751,
   size: 32,
   velocity: { x: 0, y: 0 },
 });
@@ -178,7 +178,7 @@ let oposums = [
 let sprites = [];
 
 let hearts = [
-    new Heart({
+  new Heart({
     x: 10,
     y: 10,
     width: 21,
@@ -245,11 +245,107 @@ let oceanBackgroundCanvas = null;
 let brambleBackgroundCanvas = null;
 
 function init() {
+  player = new Player({
+    x: 35,
+    y: 751,
+    size: 32,
+    velocity: { x: 0, y: 0 },
+  })
 
+  oposums = [
+    new Oposum({
+      x: 200,
+      y: 751,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 400,
+      y: 751,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 600,
+      y: 751,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 800,
+      y: 751,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 1000,
+      y: 751,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 1200,
+      y: 751,
+      width: 32,
+      height: 32,
+    }),
+  ]
+
+  sprites = []
+  hearts = [
+    new Heart({
+      x: 10,
+      y: 10,
+      width: 21,
+      height: 18,
+      imageSrc: '../images/hearts.png',
+      spriteCropbox: {
+        x: 0,
+        y: 0,
+        width: 21,
+        height: 18,
+        frames: 6,
+      },
+    }),
+    new Heart({
+      x: 33,
+      y: 10,
+      width: 21,
+      height: 18,
+      imageSrc: '../images/hearts.png',
+      spriteCropbox: {
+        x: 0,
+        y: 0,
+        width: 21,
+        height: 18,
+        frames: 6,
+      },
+    }),
+    new Heart({
+      x: 56,
+      y: 10,
+      width: 21,
+      height: 18,
+      imageSrc: '../images/hearts.png',
+      spriteCropbox: {
+        x: 0,
+        y: 0,
+        width: 21,
+        height: 18,
+        frames: 6,
+      },
+    }),
+  ]
+
+  camera = {
+    x: 0,
+    y: -(canvas.clientHeight * 0.44),
+  }
 }
+
 let camera = {
   x: 0,
-  y: -(canvas.clientHeight*0.44),
+  y: -(canvas.clientHeight * 0.44),
 };
 
 function animate(backgroundCanvas) {
@@ -297,8 +393,11 @@ function animate(backgroundCanvas) {
         const fullHearts = hearts.filter((heart) => {
           return !heart.depleted
         })
+
         if (!player.isInvincible && fullHearts.length > 0) {
           fullHearts[fullHearts.length - 1].depleted = true
+        } else if (fullHearts.length === 0) {
+          init()
         }
         player.setIsInvincible();
       }
@@ -321,7 +420,7 @@ function animate(backgroundCanvas) {
 
   if (player.y < SCROLL_POST_TOP && player.y > SCROLL_POST_TOP_LIMIT) {
     const scrollPostDistance = SCROLL_POST_TOP - player.y;
-    camera.y = scrollPostDistance - canvas.clientHeight*0.44;
+    camera.y = scrollPostDistance - canvas.clientHeight * 0.44;
   }
 
 
@@ -350,7 +449,7 @@ function animate(backgroundCanvas) {
     sprite.draw(c);
   }
 
-  
+
   c.restore();
 
   c.save();
