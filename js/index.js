@@ -237,9 +237,9 @@ const keys = {
 let lastTime = performance.now();
 
 const SCROLL_POST_RIGHT = 300;
-const SCROLL_POST_LEFT = 635;
+const SCROLL_POST_LEFT = 1091;
 const SCROLL_POST_TOP = 715;
-const SCROLL_POST_TOP_LIMIT = 430;
+const SCROLL_POST_TOP_LIMIT = 250;
 
 let oceanBackgroundCanvas = null;
 let brambleBackgroundCanvas = null;
@@ -421,23 +421,23 @@ function animate(backgroundCanvas) {
 
   if (player.y < SCROLL_POST_TOP && player.y > SCROLL_POST_TOP_LIMIT) {
     const scrollPostDistance = SCROLL_POST_TOP - player.y;
-    camera.y = scrollPostDistance - canvas.clientHeight * 0.44;
+    camera.y = scrollPostDistance - canvas.clientHeight * 0.95;
   }
 
 
   // Render scene
   c.save();
-  c.scale(dpr, dpr);
+  c.scale(dpr + 1.2, dpr + 1.2);
   c.translate(-camera.x, camera.y);
   c.clearRect(0, 0, canvas.width, canvas.height);
   c.drawImage(oceanBackgroundCanvas, camera.x * 0.32, 0);
   c.drawImage(brambleBackgroundCanvas, camera.x * 0.16, 0);
   c.drawImage(backgroundCanvas, 0, 0);
-  c.fillStyle = 'rgba(255, 0, 0, 0.5)'
+  // c.fillStyle = 'rgba(255, 0, 0, 0.5)'
   // c.fillRect(SCROLL_POST_RIGHT, 0, 10, 1000)
   // c.fillRect(SCROLL_POST_LEFT, 0, 10, 1000)
-  c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
-  c.fillRect(0, SCROLL_POST_TOP_LIMIT, 1000, 10)
+  // c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
+  // c.fillRect(0, SCROLL_POST_TOP_LIMIT, 1000, 10)
   player.draw(c);
 
   for (let i = oposums.length - 1; i >= 0; i--) {
@@ -454,7 +454,7 @@ function animate(backgroundCanvas) {
   c.restore();
 
   c.save();
-  c.scale(dpr, dpr);
+  c.scale(dpr + 1, dpr + 1);
   for (let i = hearts.length - 1; i >= 0; i--) {
     const heart = hearts[i];
     heart.draw(c);
