@@ -131,7 +131,7 @@ const renderStaticLayers = async (layersData) => {
 // Change xy coordinates to move player's default position
 let player = new Player({
   x: 35,
-  y: 751,
+  y: 710,
   size: 32,
   velocity: { x: 0, y: 0 },
 });
@@ -238,7 +238,7 @@ let lastTime = performance.now();
 
 const SCROLL_POST_RIGHT = 300;
 const SCROLL_POST_LEFT = 635;
-const SCROLL_POST_TOP = 670;
+const SCROLL_POST_TOP = 715;
 const SCROLL_POST_TOP_LIMIT = 430;
 
 let oceanBackgroundCanvas = null;
@@ -247,54 +247,12 @@ let brambleBackgroundCanvas = null;
 function init() {
   player = new Player({
     x: 35,
-    y: 751,
+    y: 710,
     size: 32,
     velocity: { x: 0, y: 0 },
   })
 
   oposums = [
-    new Oposum({
-      x: 200,
-      y: 543,
-      width: 32,
-      height: 32,
-    }),
-    new Oposum({
-      x: 200,
-      y: 543,
-      width: 32,
-      height: 32,
-    }),
-    new Oposum({
-      x: 400,
-      y: 543,
-      width: 32,
-      height: 32,
-    }),
-    new Oposum({
-      x: 600,
-      y: 543,
-      width: 32,
-      height: 32,
-    }),
-    new Oposum({
-      x: 800,
-      y: 543,
-      width: 32,
-      height: 32,
-    }),
-    new Oposum({
-      x: 1000,
-      y: 543,
-      width: 32,
-      height: 32,
-    }),
-    new Oposum({
-      x: 1200,
-      y: 543,
-      width: 32,
-      height: 32,
-    }),
     new Oposum({
       x: 200,
       y: 751,
@@ -475,11 +433,11 @@ function animate(backgroundCanvas) {
   c.drawImage(oceanBackgroundCanvas, camera.x * 0.32, 0);
   c.drawImage(brambleBackgroundCanvas, camera.x * 0.16, 0);
   c.drawImage(backgroundCanvas, 0, 0);
-  // c.fillStyle = 'rgba(255, 0, 0, 0.5)'
+  c.fillStyle = 'rgba(255, 0, 0, 0.5)'
   // c.fillRect(SCROLL_POST_RIGHT, 0, 10, 1000)
   // c.fillRect(SCROLL_POST_LEFT, 0, 10, 1000)
-  // c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
-  // c.fillRect(0, SCROLL_POST_TOP_LIMIT, 1000, 10)
+  c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
+  c.fillRect(0, SCROLL_POST_TOP_LIMIT, 1000, 10)
   player.draw(c);
 
   for (let i = oposums.length - 1; i >= 0; i--) {
@@ -522,5 +480,4 @@ const startRendering = async () => {
   }
 };
 
-init()
 startRendering();
