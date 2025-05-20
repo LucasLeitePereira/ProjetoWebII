@@ -129,16 +129,14 @@ const renderStaticLayers = async (layersData) => {
 // END - Tile setup
 
 // Change xy coordinates to move player's default position
-const player = new Player({
-  x: 82,
-  y: 751,
+let player = new Player({
+  x: 35,
+  y: 447,
   size: 32,
   velocity: { x: 0, y: 0 },
 });
 
-let oposums = [];
-
-oposums = [
+let oposums = [
   new Oposum({
     x: 200,
     y: 751,
@@ -177,7 +175,52 @@ oposums = [
   }),
 ];
 
-const sprites = [];
+let sprites = [];
+
+let hearts = [
+    new Heart({
+    x: 10,
+    y: 10,
+    width: 21,
+    height: 18,
+    imageSrc: '../images/hearts.png',
+    spriteCropbox: {
+      x: 0,
+      y: 0,
+      width: 21,
+      height: 18,
+      frames: 6,
+    },
+  }),
+  new Heart({
+    x: 33,
+    y: 10,
+    width: 21,
+    height: 18,
+    imageSrc: '../images/hearts.png',
+    spriteCropbox: {
+      x: 0,
+      y: 0,
+      width: 21,
+      height: 18,
+      frames: 6,
+    },
+  }),
+  new Heart({
+    x: 56,
+    y: 10,
+    width: 21,
+    height: 18,
+    imageSrc: '../images/hearts.png',
+    spriteCropbox: {
+      x: 0,
+      y: 0,
+      width: 21,
+      height: 18,
+      frames: 6,
+    },
+  })
+]
 
 const keys = {
   w: {
@@ -201,7 +244,10 @@ const SCROLL_POST_TOP_LIMIT = 430;
 let oceanBackgroundCanvas = null;
 let brambleBackgroundCanvas = null;
 
-const camera = {
+function init() {
+
+}
+let camera = {
   x: 0,
   y: -(canvas.clientHeight*0.44),
 };
@@ -248,6 +294,12 @@ function animate(backgroundCanvas) {
         collisionDirection === "left" ||
         collisionDirection === "right"
       ) {
+        const fullHearts = hearts.filter((heart) => {
+          return !heart.depleted
+        })
+        if (!player.isInvincible && fullHearts.length > 0) {
+          fullHearts[fullHearts.length - 1].depleted = true
+        }
         player.setIsInvincible();
       }
     }
@@ -281,11 +333,11 @@ function animate(backgroundCanvas) {
   c.drawImage(oceanBackgroundCanvas, camera.x * 0.32, 0);
   c.drawImage(brambleBackgroundCanvas, camera.x * 0.16, 0);
   c.drawImage(backgroundCanvas, 0, 0);
-  c.fillStyle = 'rgba(255, 0, 0, 0.5)'
+  // c.fillStyle = 'rgba(255, 0, 0, 0.5)'
   // c.fillRect(SCROLL_POST_RIGHT, 0, 10, 1000)
   // c.fillRect(SCROLL_POST_LEFT, 0, 10, 1000)
   // c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
-  c.fillRect(0, SCROLL_POST_TOP_LIMIT, 1000, 10)
+  // c.fillRect(0, SCROLL_POST_TOP_LIMIT, 1000, 10)
   player.draw(c);
 
   for (let i = oposums.length - 1; i >= 0; i--) {
@@ -297,7 +349,17 @@ function animate(backgroundCanvas) {
     const sprite = sprites[i];
     sprite.draw(c);
   }
+
+  
   c.restore();
+
+  c.save();
+  c.scale(dpr, dpr);
+  for (let i = hearts.length - 1; i >= 0; i--) {
+    const heart = hearts[i];
+    heart.draw(c);
+  }
+  c.restore()
 
   requestAnimationFrame(() => animate(backgroundCanvas));
 }
