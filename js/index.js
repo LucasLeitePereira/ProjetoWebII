@@ -196,14 +196,14 @@ let lastTime = performance.now();
 const SCROLL_POST_RIGHT = 300;
 const SCROLL_POST_LEFT = 635;
 const SCROLL_POST_TOP = 670;
-const SCROLL_POST_TOP_LIMIT = 303;
+const SCROLL_POST_TOP_LIMIT = 430;
 
 let oceanBackgroundCanvas = null;
 let brambleBackgroundCanvas = null;
 
 const camera = {
   x: 0,
-  y: -(canvas.clientHeight),
+  y: -(canvas.clientHeight*0.44),
 };
 
 function animate(backgroundCanvas) {
@@ -269,7 +269,7 @@ function animate(backgroundCanvas) {
 
   if (player.y < SCROLL_POST_TOP && player.y > SCROLL_POST_TOP_LIMIT) {
     const scrollPostDistance = SCROLL_POST_TOP - player.y;
-    camera.y = scrollPostDistance - canvas.clientHeight;
+    camera.y = scrollPostDistance - canvas.clientHeight*0.44;
   }
 
 
@@ -281,11 +281,11 @@ function animate(backgroundCanvas) {
   c.drawImage(oceanBackgroundCanvas, camera.x * 0.32, 0);
   c.drawImage(brambleBackgroundCanvas, camera.x * 0.16, 0);
   c.drawImage(backgroundCanvas, 0, 0);
-  // c.fillStyle = 'rgba(255, 0, 0, 0.5)'
+  c.fillStyle = 'rgba(255, 0, 0, 0.5)'
   // c.fillRect(SCROLL_POST_RIGHT, 0, 10, 1000)
   // c.fillRect(SCROLL_POST_LEFT, 0, 10, 1000)
   // c.fillRect(0, SCROLL_POST_TOP, 1000, 10)
-  // c.fillRect(0, SCROLL_POST_TOP_LIMIT, 1000, 10)
+  c.fillRect(0, SCROLL_POST_TOP_LIMIT, 1000, 10)
   player.draw(c);
 
   for (let i = oposums.length - 1; i >= 0; i--) {
