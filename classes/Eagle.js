@@ -1,10 +1,11 @@
-const OPOSUM_X_VELOCITY = -20
-const OPOSUM_JUMP_POWER = 250
-const OPOSUM_GRAVITY = 580
+const EAGLE_X_VELOCITY = -50
+const EAGLE_Y_VELOCITY = -25
+const EAGLE_JUMP_POWER = 250
+const EAGLE_GRAVITY = 580
 
-class Oposum {
+class Eagle {
   constructor(
-    { x, y, width, height, velocity = { x: OPOSUM_X_VELOCITY, y: 0 } },
+    { x, y, width, height, velocity = { x: EAGLE_X_VELOCITY, y: EAGLE_Y_VELOCITY } },
     turningDistance = 100,
   ) {
     this.x = x
@@ -18,25 +19,25 @@ class Oposum {
     this.image.onload = () => {
       this.isImageLoaded = true
     }
-    this.image.src = '../images/OpossumSpritesheet.png'
+    this.image.src = '../images/eagle-attack.png'
     this.elapsedTime = 0
     this.currentFrame = 0
     this.sprites = {
-      run: {
+      fly: {
         x: 0,
         y: 0,
-        width: 36,
-        height: 28,
-        frames: 6,
+        width: 40,
+        height: 41,
+        frames: 4,
       },
     }
-    this.currentSprite = this.sprites.run
+    this.currentSprite = this.sprites.fly
     this.facing = 'right'
     this.hitbox = {
       x: 0,
       y: 0,
-      width: 31,
-      height: 23,
+      width: 40,
+      height: 41,
     }
     this.distanceTraveled = 0
     this.turningDistance = turningDistance
@@ -97,7 +98,7 @@ class Oposum {
     this.hitbox.x = this.x
     this.hitbox.y = this.y + 9
 
-    this.applyGravity(deltaTime)
+    // this.applyGravity(deltaTime)
 
     // Update horizontal position and check collisions
     this.updateHorizontalPosition(deltaTime)
@@ -122,7 +123,7 @@ class Oposum {
   }
 
   jump() {
-    this.velocity.y = -OPOSUM_JUMP_POWER
+    this.velocity.y = -EAGLE_JUMP_POWER
     this.isOnGround = false
   }
 
@@ -138,21 +139,27 @@ class Oposum {
   }
 
   updateVerticalPosition(deltaTime) {
+    if (Math.abs(this.distanceTraveled) > this.turningDistance) {
+      this.velocity.y = -this.velocity.y
+      this.distanceTraveled = 0
+    }
+
     this.y += this.velocity.y * deltaTime
     this.hitbox.y += this.velocity.y * deltaTime
+    this.distanceTraveled += this.velocity.y * deltaTime
   }
 
   applyGravity(deltaTime) {
-    this.velocity.y += OPOSUM_GRAVITY * deltaTime
+    this.velocity.y += EAGLE_GRAVITY * deltaTime
   }
 
   handleInput(keys) {
     this.velocity.x = 0
 
     if (keys.d.pressed) {
-      this.velocity.x = OPOSUM_X_VELOCITY
+      this.velocity.x = EAGLE_X_VELOCITY
     } else if (keys.a.pressed) {
-      this.velocity.x = -OPOSUM_X_VELOCITY
+      this.velocity.x = -EAGLE_X_VELOCITY
     }
   }
 

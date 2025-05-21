@@ -20,7 +20,7 @@ const layersData = {
   l_Casa: l_Casa,
   l_Espinhos: l_Espinhos,
   l_Itens: l_Itens,
-  l_Inimigos: l_Inimigos,
+  // l_Inimigos: l_Inimigos,
   l_Colisores: l_Colisores,
 };
 
@@ -136,91 +136,13 @@ let player = new Player({
   velocity: { x: 0, y: 0 },
 });
 
-let oposums = [
-  new Oposum({
-    x: 200,
-    y: 751,
-    width: 32,
-    height: 32,
-  }),
-  new Oposum({
-    x: 400,
-    y: 751,
-    width: 32,
-    height: 32,
-  }),
-  new Oposum({
-    x: 600,
-    y: 751,
-    width: 32,
-    height: 32,
-  }),
-  new Oposum({
-    x: 800,
-    y: 751,
-    width: 32,
-    height: 32,
-  }),
-  new Oposum({
-    x: 1000,
-    y: 751,
-    width: 32,
-    height: 32,
-  }),
-  new Oposum({
-    x: 1200,
-    y: 751,
-    width: 32,
-    height: 32,
-  }),
-];
+let oposums = []
+
+let eagles = []
 
 let sprites = [];
 
-let hearts = [
-  new Heart({
-    x: 10,
-    y: 10,
-    width: 21,
-    height: 18,
-    imageSrc: '../images/hearts.png',
-    spriteCropbox: {
-      x: 0,
-      y: 0,
-      width: 21,
-      height: 18,
-      frames: 6,
-    },
-  }),
-  new Heart({
-    x: 33,
-    y: 10,
-    width: 21,
-    height: 18,
-    imageSrc: '../images/hearts.png',
-    spriteCropbox: {
-      x: 0,
-      y: 0,
-      width: 21,
-      height: 18,
-      frames: 6,
-    },
-  }),
-  new Heart({
-    x: 56,
-    y: 10,
-    width: 21,
-    height: 18,
-    imageSrc: '../images/hearts.png',
-    spriteCropbox: {
-      x: 0,
-      y: 0,
-      width: 21,
-      height: 18,
-      frames: 6,
-    },
-  })
-]
+let hearts = []
 
 const keys = {
   w: {
@@ -338,6 +260,15 @@ function init() {
     }),
   ]
 
+  eagles = [
+    new Eagle({
+      x: 50,
+      y: 600,
+      width: 32,
+      height: 32,
+    })
+  ]
+
   camera = {
     x: 0,
     y: -(canvas.clientHeight * 0.44),
@@ -364,7 +295,7 @@ function animate(backgroundCanvas) {
     const oposum = oposums[i];
     oposum.update(deltaTime, collisionBlocks);
 
-    // Jump on enemy
+    // Jump on oposum enemy
     const collisionDirection = checkCollisions(player, oposum);
     if (collisionDirection) {
       if (collisionDirection === "bottom" && !player.isOnGround) {
@@ -404,6 +335,55 @@ function animate(backgroundCanvas) {
       }
     }
   }
+
+  // Update eagle position
+  for (let i = eagles.length - 1; i >= 0; i--) {
+    const eagle = eagles[i]
+    eagle.update(deltaTime, collisionBlocks)
+
+    // Jump on enemy
+    const collisionDirection = checkCollisions(player, eagle)
+    if (collisionDirection) {
+      if (collisionDirection === 'bottom' && !player.isOnGround) {
+        player.velocity.y = -200
+        sprites.push(
+          new Sprite({
+            x: eagle.x,
+            y: eagle.y,
+            width: 32,
+            height: 32,
+            imageSrc: './images/enemy-death.png',
+            spriteCropbox: {
+              x: 0,
+              y: 0,
+              width: 40,
+              height: 41,
+              frames: 6,
+            },
+          }),
+        )
+
+        eagles.splice(i, 1)
+      } else if (
+        collisionDirection === 'left' ||
+        collisionDirection === 'right' ||
+        collisionDirection === 'top'
+      ) {
+        const fullHearts = hearts.filter((heart) => {
+          return !heart.depleted
+        })
+
+        if (!player.isInvincible && fullHearts.length > 0) {
+          fullHearts[fullHearts.length - 1].depleted = true
+        } else if (fullHearts.length === 0) {
+          init()
+        }
+      }
+    } 
+
+  }
+
+
   for (let i = sprites.length - 1; i >= 0; i--) {
     const sprite = sprites[i];
     sprite.update(deltaTime);
@@ -450,6 +430,11 @@ function animate(backgroundCanvas) {
     sprite.draw(c);
   }
 
+  for (let i = eagles.length - 1; i >= 0; i--) {
+    const eagle = eagles[i]
+    eagle.draw(c)
+  }
+
 
   c.restore();
 
@@ -480,4 +465,5 @@ const startRendering = async () => {
   }
 };
 
+init()
 startRendering();
