@@ -39,6 +39,9 @@ const tilesets = {
   l_Colisores: { imageUrl: "./images/decorations.png", tileSize: 16 },
 };
 
+const imageWin = new Image()
+imageWin.src = '../images/win.png'
+
 // Tile setup
 const collisionBlocks = [];
 const platforms = [];
@@ -218,8 +221,8 @@ function init() {
   })
 
   player = new Player({
-    x: 35,
-    y: 710,
+    x: 1050,
+    y: 303,
     size: 32,
     velocity: { x: 0, y: 0 },
   })
@@ -672,6 +675,7 @@ function animate(backgroundCanvas) {
     item.draw(c)
   }
 
+  
 
   c.restore();
 
@@ -683,6 +687,13 @@ function animate(backgroundCanvas) {
   }
   itenUI.draw(c)
   c.fillText(itensCount, 33, 46)
+  c.drawImage(
+    imageWin,
+    (canvas.width - canvas.width * 0.7) / 2,
+    (canvas.height - canvas.height * 0.7)/ 2, 
+    canvas.width * 0.15,
+    canvas.height * 0.1
+  )
   c.restore()
 
   requestAnimationFrame(() => animate(backgroundCanvas));
