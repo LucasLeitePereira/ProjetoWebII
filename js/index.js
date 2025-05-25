@@ -144,6 +144,8 @@ let sprites = [];
 
 let hearts = []
 
+let frogs = []
+
 const keys = {
   w: {
     pressed: false,
@@ -211,7 +213,30 @@ function init() {
       width: 32,
       height: 32,
     }),
-    
+    new Oposum({
+      x: 490,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 882,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 1221,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Oposum({
+      x: 225,
+      y: 447,
+      width: 32,
+      height: 32,
+    }),
   ]
 
   sprites = []
@@ -262,11 +287,80 @@ function init() {
 
   eagles = [
     new Eagle({
-      x: 50,
-      y: 600,
+      x: 35,
+      y: 300,
       width: 32,
       height: 32,
-    })
+    }),
+    new Eagle({
+      x: 35,
+      y: 200,
+      width: 32,
+      height: 32,
+    }),
+    new Eagle({
+      x: 35,
+      y: 100,
+      width: 32,
+      height: 32,
+    }),
+    new Eagle({
+      x: 650,
+      y: 200,
+      width: 32,
+      height: 32,
+    }),
+    new Eagle({
+      x: 980,
+      y: 300,
+      width: 32,
+      height: 32,
+    }),
+  ]
+
+  frogs = [
+    new Frog({
+      x: 123,
+      y: 639,
+      width: 32,
+      height: 32,
+    }),
+    new Frog({
+      x: 478,
+      y: 639,
+      width: 32,
+      height: 32,
+    }),
+    new Frog({
+      x: 771,
+      y: 639,
+      width: 32,
+      height: 32,
+    }),
+    new Frog({
+      x: 1054,
+      y: 639,
+      width: 32,
+      height: 32,
+    }),
+    new Frog({
+      x: 218,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Frog({
+      x: 565,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
+    new Frog({
+      x: 978,
+      y: 543,
+      width: 32,
+      height: 32,
+    }),
   ]
 
   camera = {
@@ -345,14 +439,14 @@ function animate(backgroundCanvas) {
     const collisionDirection = checkCollisions(player, eagle)
     if (collisionDirection) {
       if (collisionDirection === 'bottom' && !player.isOnGround) {
-        player.velocity.y = -200
+        player.velocity.y = -300;
         sprites.push(
           new Sprite({
             x: eagle.x,
             y: eagle.y,
             width: 32,
             height: 32,
-            imageSrc: './images/enemy-death.png',
+            imageSrc: '../images/enemy-deadth.png',
             spriteCropbox: {
               x: 0,
               y: 0,
@@ -378,11 +472,57 @@ function animate(backgroundCanvas) {
         } else if (fullHearts.length === 0) {
           init()
         }
-      }
-    } 
 
+        player.setIsInvincible()
+      }
+    }
   }
 
+  // Update oposum position
+  for (let i = frogs.length - 1; i >= 0; i--) {
+    const frog = frogs[i];
+    frog.update(deltaTime, collisionBlocks);
+
+    // Jump on oposum enemy
+    const collisionDirection = checkCollisions(player, frog);
+    if (collisionDirection) {
+      if (collisionDirection === "bottom" && !player.isOnGround) {
+        player.velocity.y = -200;
+        sprites.push(
+          new Sprite({
+            x: frog.x,
+            y: frog.y,
+            width: 32,
+            height: 32,
+            imageSrc: "../images/enemy-deadth.png",
+            spriteCropbox: {
+              x: 0,
+              y: 0,
+              width: 40,
+              height: 41,
+              frames: 6,
+            },
+          })
+        );
+
+        frogs.splice(i, 1);
+      } else if (
+        collisionDirection === "left" ||
+        collisionDirection === "right"
+      ) {
+        const fullHearts = hearts.filter((heart) => {
+          return !heart.depleted
+        })
+
+        if (!player.isInvincible && fullHearts.length > 0) {
+          fullHearts[fullHearts.length - 1].depleted = true
+        } else if (fullHearts.length === 0) {
+          init()
+        }
+        player.setIsInvincible();
+      }
+    }
+  }
 
   for (let i = sprites.length - 1; i >= 0; i--) {
     const sprite = sprites[i];
@@ -433,6 +573,11 @@ function animate(backgroundCanvas) {
   for (let i = eagles.length - 1; i >= 0; i--) {
     const eagle = eagles[i]
     eagle.draw(c)
+  }
+
+  for (let i = frogs.length - 1; i >= 0; i--) {
+    const frog = frogs[i]
+    frog.draw(c)
   }
 
 

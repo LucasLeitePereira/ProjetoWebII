@@ -1,5 +1,5 @@
 const X_VELOCITY = 200
-const JUMP_POWER = 250
+const JUMP_POWER = 280
 const GRAVITY = 580
 
 class Player {
@@ -213,8 +213,10 @@ class Player {
   }
 
   jump() {
-    this.velocity.y = -JUMP_POWER
-    this.isOnGround = false
+    if (this.isOnGround == true) {
+      this.velocity.y = -JUMP_POWER
+      this.isOnGround = false
+    }
   }
 
   updateHorizontalPosition(deltaTime) {

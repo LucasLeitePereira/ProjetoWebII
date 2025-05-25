@@ -1,12 +1,12 @@
-const EAGLE_X_VELOCITY = -50
-const EAGLE_Y_VELOCITY = -25
+const EAGLE_X_VELOCITY = 0
+const EAGLE_Y_VELOCITY = -50
 const EAGLE_JUMP_POWER = 250
 const EAGLE_GRAVITY = 580
 
 class Eagle {
   constructor(
     { x, y, width, height, velocity = { x: EAGLE_X_VELOCITY, y: EAGLE_Y_VELOCITY } },
-    turningDistance = 100,
+    turningDistance = 50,
   ) {
     this.x = x
     this.y = y
@@ -36,10 +36,11 @@ class Eagle {
     this.hitbox = {
       x: 0,
       y: 0,
-      width: 40,
-      height: 41,
+      width: 30,
+      height: 20,
     }
-    this.distanceTraveled = 0
+    this.distanceTraveledX = 0
+    this.distanceTraveledY = 0
     this.turningDistance = turningDistance
   }
 
@@ -128,25 +129,25 @@ class Eagle {
   }
 
   updateHorizontalPosition(deltaTime) {
-    if (Math.abs(this.distanceTraveled) > this.turningDistance) {
+    if (Math.abs(this.distanceTraveledX) > this.turningDistance) {
       this.velocity.x = -this.velocity.x
-      this.distanceTraveled = 0
+      this.distanceTraveledX = 0
     }
 
     this.x += this.velocity.x * deltaTime
     this.hitbox.x += this.velocity.x * deltaTime
-    this.distanceTraveled += this.velocity.x * deltaTime
+    this.distanceTraveledX += this.velocity.x * deltaTime
   }
 
   updateVerticalPosition(deltaTime) {
-    if (Math.abs(this.distanceTraveled) > this.turningDistance) {
+    if (Math.abs(this.distanceTraveledY) > this.turningDistance) {
       this.velocity.y = -this.velocity.y
-      this.distanceTraveled = 0
+      this.distanceTraveledY = 0
     }
 
     this.y += this.velocity.y * deltaTime
     this.hitbox.y += this.velocity.y * deltaTime
-    this.distanceTraveled += this.velocity.y * deltaTime
+    this.distanceTraveledY += this.velocity.y * deltaTime
   }
 
   applyGravity(deltaTime) {
