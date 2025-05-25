@@ -47,15 +47,15 @@ class Player {
         height: 32,
         frames: 1,
       },
-      roll: {
+      win: {
         x: 0,
-        y: 32 * 9,
+        y: 32 * 11,
         width: 33,
         height: 32,
-        frames: 4,
+        frames: 1,
       },
     }
-    this.currentSprite = this.sprites.roll
+    this.currentSprite = this.sprites.idle
     this.facing = 'right'
     this.hitbox = {
       x: 0,
@@ -180,6 +180,7 @@ class Player {
     if (
       this.isOnGround &&
       this.velocity.x === 0 &&
+      itens.length != 0 &&
       this.currentSprite !== this.sprites.idle
     ) {
       // Idle
@@ -209,6 +210,14 @@ class Player {
       // Fall
       this.currentFrame = 0
       this.currentSprite = this.sprites.fall
+    } else if (
+      this.isOnGround &&
+      itens.length === 0 &&
+      this.currentSprite !== this.sprites.win
+    ) {
+      // Win
+      this.currentFrame = 0
+      this.currentSprite = this.sprites.win
     }
   }
 

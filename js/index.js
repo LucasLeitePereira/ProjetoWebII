@@ -19,7 +19,7 @@ const layersData = {
   l_Terreno: l_Terreno,
   l_Casa: l_Casa,
   l_Espinhos: l_Espinhos,
-  l_Itens: l_Itens,
+  // l_Itens: l_Itens,
   // l_Inimigos: l_Inimigos,
   l_Colisores: l_Colisores,
 };
@@ -32,7 +32,7 @@ const tilesets = {
   l_Casa: { imageUrl: "./images/decorations.png", tileSize: 16 },
   l_Espinhos: { imageUrl: "./images/decorations.png", tileSize: 16 },
   l_Itens: {
-    imageUrl: "./images/235acecb-61d8-4f9b-4f6c-8995c1930e00.png",
+    imageUrl: "./images/banana.png",
     tileSize: 16,
   },
   l_Inimigos: { imageUrl: "./images/decorations.png", tileSize: 16 },
@@ -164,11 +164,59 @@ const SCROLL_POST_RIGHT = 300;
 const SCROLL_POST_LEFT = 1091;
 const SCROLL_POST_TOP = 715;
 const SCROLL_POST_TOP_LIMIT = 250;
-
 let oceanBackgroundCanvas = null;
 let brambleBackgroundCanvas = null;
+let itens = [];
+let isPaused;
 
 function init() {
+  itens = []
+  itensCount = 0
+  itenUI = new Sprite({
+    x: 3,
+    y: 27,
+    width: 32,
+    height: 32,
+    imageSrc: '../images/banana.png',
+    spriteCropbox: {
+      x: 0,
+      y: 0,
+      width: 32,
+      height: 32,
+      frames: 5,
+    },
+  })
+
+  l_Itens.forEach((row, y) => {
+    row.forEach((symbol, x) => {
+      if (symbol === 1) {
+        itens.push(
+          new Sprite({
+            x: x * 16,
+            y: y * 16,
+            width: 32,
+            height: 32,
+            imageSrc: '../images/banana.png',
+            spriteCropbox: {
+              x: 0,
+              y: 0,
+              width: 32,
+              height: 32,
+              frames: 17,
+            },
+            hitbox: {
+              x: x * 16,
+              y: y * 16,
+              width: 32,
+              height: 32,
+            },
+          }),
+        )
+      }
+    })
+    
+  })
+
   player = new Player({
     x: 35,
     y: 710,
@@ -375,6 +423,7 @@ let camera = {
 };
 
 function animate(backgroundCanvas) {
+  if (isPaused) return;
   // Calculate delta time
   const currentTime = performance.now();
   const deltaTime = (currentTime - lastTime) / 1000;
@@ -533,6 +582,44 @@ function animate(backgroundCanvas) {
     }
   }
 
+  for (let i = itens.length - 1; i >= 0; i--) {
+    const item = itens[i]
+    item.update(deltaTime)
+
+    // THIS IS WHERE WE ARE COLLECTING itens
+    const collisionDirection = checkCollisions(player, item)
+    if (collisionDirection) {
+      // create an item feedback animation
+      sprites.push(
+        new Sprite({
+          x: item.x,
+          y: item.y,
+          width: 32,
+          height: 32,
+          imageSrc: '../images/item-feedback.png',
+          spriteCropbox: {
+            x: 0,
+            y: 0,
+            width: 32,
+            height: 32,
+            frames: 5,
+          },
+        }),
+      )
+
+      // remove a gem from the game
+      itens.splice(i, 1)
+      itensCount++
+
+      if (itens.length === 0) {
+        console.log("YOU WIN")
+        setTimeout(() => {
+          togglePause();
+        }, 1000)
+      }
+    }
+  }
+
   // Track scroll post distance
   if (player.x > SCROLL_POST_RIGHT && player.x < SCROLL_POST_LEFT) {
     const scrollPostDistance = player.x - SCROLL_POST_RIGHT;
@@ -580,6 +667,11 @@ function animate(backgroundCanvas) {
     frog.draw(c)
   }
 
+  for (let i = itens.length - 1; i >= 0; i--) {
+    const item = itens[i]
+    item.draw(c)
+  }
+
 
   c.restore();
 
@@ -589,10 +681,21 @@ function animate(backgroundCanvas) {
     const heart = hearts[i];
     heart.draw(c);
   }
+  itenUI.draw(c)
+  c.fillText(itensCount, 33, 46)
   c.restore()
 
   requestAnimationFrame(() => animate(backgroundCanvas));
 }
+
+function togglePause() {
+  isPaused = !isPaused;
+}
+
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') togglePause();
+  console.log("Pasou")
+});
 
 const startRendering = async () => {
   try {
