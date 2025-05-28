@@ -220,8 +220,8 @@ function init() {
   })
 
   player = new Player({
-    x: 1050,
-    y: 303,
+    x: 35,
+    y: 710,
     size: 32,
     velocity: { x: 0, y: 0 },
   })
