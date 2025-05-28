@@ -39,9 +39,6 @@ const tilesets = {
   l_Colisores: { imageUrl: "./images/decorations.png", tileSize: 16 },
 };
 
-const imageWin = new Image()
-imageWin.src = '../images/win.png'
-
 // Tile setup
 const collisionBlocks = [];
 const platforms = [];
@@ -138,6 +135,8 @@ let player = new Player({
   size: 32,
   velocity: { x: 0, y: 0 },
 });
+
+let winScreen = new Win({});
 
 let oposums = []
 
@@ -674,9 +673,6 @@ function animate(backgroundCanvas) {
     const item = itens[i]
     item.draw(c)
   }
-
-  
-
   c.restore();
 
   c.save();
@@ -685,15 +681,11 @@ function animate(backgroundCanvas) {
     const heart = hearts[i];
     heart.draw(c);
   }
+  if (itens.length === 0) {
+    winScreen.draw(c);
+  }
   itenUI.draw(c)
   c.fillText(itensCount, 33, 46)
-  c.drawImage(
-    imageWin,
-    (canvas.width - canvas.width * 0.7) / 2,
-    (canvas.height - canvas.height * 0.7)/ 2, 
-    canvas.width * 0.15,
-    canvas.height * 0.1
-  )
   c.restore()
 
   requestAnimationFrame(() => animate(backgroundCanvas));
