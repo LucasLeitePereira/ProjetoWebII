@@ -44,6 +44,9 @@ const collisionBlocks = [];
 const platforms = [];
 const blockSize = 16; // Assuming each tile is 16x16 pixels
 
+const musicaDeFundoMuitoFoda = new Audio('../audio/donkeykongostf.mp3');
+musicaDeFundoMuitoFoda.play()
+
 collisions.forEach((row, y) => {
   row.forEach((symbol, x) => {
     if (symbol === 1) {
