@@ -44,8 +44,36 @@ const collisionBlocks = [];
 const platforms = [];
 const blockSize = 16; // Assuming each tile is 16x16 pixels
 
-const musicaDeFundoMuitoFoda = new Audio('../audio/donkeykongostf.mp3');
-musicaDeFundoMuitoFoda.play()
+const somColetaItem = new Audio('../audio/coin.wav');
+somColetaItem.volume = 0.5
+
+const inimigoBagugado = new Audio('../audio/impactsplat07.flac');
+inimigoBagugado.volume = 0.3
+
+let musicaDeFundoMuitoFoda;
+
+function carregarMusicaMuitoFoda() {
+  musicaDeFundoMuitoFoda = new Audio('../audio/donkeykongostf.mp3');
+  musicaDeFundoMuitoFoda.load();
+  musicaDeFundoMuitoFoda.volume = 0.8;
+  musicaDeFundoMuitoFoda.loop = true;
+  musicaDeFundoMuitoFoda.play().catch(err => {
+    // se ainda assim falhar, podemos registrar no console
+    console.warn('Não foi possível reproduzir a música automaticamente:', err);
+  });
+}
+
+// Assim que o usuário clicar (ou apertar qualquer tecla), a música será iniciada.
+function aguardarInteracaoParaAudio() {
+  const iniciarAudio = () => {
+    carregarMusicaMuitoFoda();
+    window.removeEventListener('click', iniciarAudio);
+    window.removeEventListener('keydown', iniciarAudio);
+  };
+  window.addEventListener('click', iniciarAudio);
+  window.addEventListener('keydown', iniciarAudio);
+}
+
 
 collisions.forEach((row, y) => {
   row.forEach((symbol, x) => {
@@ -174,7 +202,10 @@ let brambleBackgroundCanvas = null;
 let itens = [];
 let isPaused;
 
-function init() {
+// Chame isso antes de iniciar o jogo:
+aguardarInteracaoParaAudio();
+
+function init() {  
   itens = []
   itensCount = 0
   itenUI = new Sprite({
@@ -464,7 +495,7 @@ function animate(backgroundCanvas) {
             },
           })
         );
-
+        inimigoBagugado.play();
         oposums.splice(i, 1);
       } else if (
         collisionDirection === "left" ||
@@ -510,7 +541,7 @@ function animate(backgroundCanvas) {
             },
           }),
         )
-
+        inimigoBagugado.play();
         eagles.splice(i, 1)
       } else if (
         collisionDirection === 'left' ||
@@ -558,7 +589,7 @@ function animate(backgroundCanvas) {
             },
           })
         );
-
+        inimigoBagugado.play();
         frogs.splice(i, 1);
       } else if (
         collisionDirection === "left" ||
@@ -612,6 +643,7 @@ function animate(backgroundCanvas) {
         }),
       )
 
+      somColetaItem.play();
       // remove a gem from the game
       itens.splice(i, 1)
       itensCount++
@@ -620,6 +652,7 @@ function animate(backgroundCanvas) {
         console.log("YOU WIN")
         setTimeout(() => {
           togglePause();
+          musicaDeFundoMuitoFoda.pause();
         }, 1000)
       }
     }
@@ -697,11 +730,6 @@ function animate(backgroundCanvas) {
 function togglePause() {
   isPaused = !isPaused;
 }
-
-window.addEventListener('keydown', e => {
-  if (e.key === 'Escape') togglePause();
-  console.log("Pasou")
-});
 
 const startRendering = async () => {
   try {

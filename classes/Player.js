@@ -28,7 +28,7 @@ class Player {
       },
       run: {
         x: 0,
-        y: 32,
+        y: 33,
         width: 33,
         height: 30,
         frames: 6,
