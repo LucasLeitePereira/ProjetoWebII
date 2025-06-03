@@ -66,6 +66,13 @@ class Player {
     this.isInvincible = false
     this.isRolling = false
     this.isInAirAfterRolling = false
+    this.jumpSound = new Audio('../audio/jump.wav')
+    this.runSound = new Audio('../audio/gravel.mp3')
+    this.jumpSound.volume = 0.1;
+    this.runSound.volume = 0.3;
+
+    this.runSound.loop = true // opcional: para tocar enquanto corre
+    this.runSound.playbackRate = 1.5;
   }
 
   setIsInvincible() {
@@ -225,6 +232,8 @@ class Player {
     if (this.isOnGround == true) {
       this.velocity.y = -JUMP_POWER
       this.isOnGround = false
+      this.jumpSound.currentTime = 0
+      this.jumpSound.play()
     }
   }
 
@@ -251,6 +260,16 @@ class Player {
       this.velocity.x = X_VELOCITY
     } else if (keys.a.pressed) {
       this.velocity.x = -X_VELOCITY
+    }
+
+    if (keys.d.pressed || keys.a.pressed) {
+      if (this.isOnGround && this.runSound.paused) {
+        this.runSound.currentTime = 0
+        this.runSound.play()
+      }
+    } else {
+      this.runSound.pause()
+      this.runSound.currentTime = 0
     }
   }
 
