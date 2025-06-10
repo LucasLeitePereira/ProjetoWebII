@@ -162,7 +162,7 @@ const renderStaticLayers = async (layersData) => {
 // Change xy coordinates to move player's default position
 let player = new Player({
   x: 35,
-  y: 710,
+  y: 690,
   size: 32,
   velocity: { x: 0, y: 0 },
 });
@@ -255,7 +255,7 @@ function init() {
 
   player = new Player({
     x: 35,
-    y: 710,
+    y: 690,
     size: 32,
     velocity: { x: 0, y: 0 },
   })
