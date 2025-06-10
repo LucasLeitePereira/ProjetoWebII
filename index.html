@@ -2,18 +2,18 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Donkey Kong Country</title>
+  <title>Crash Bandicoot Game</title>
   <link rel="stylesheet" href="estilo.css">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Wellfleet&display=swap" rel="stylesheet"></head>
 <body>
-  <video autoplay muted loop id="background-video">
-    <source src="/videoBack/DonkeyKong.gif" type="video/mp4">
+  <video autoplay loop id="background-video">
+    <source src="Crash Bandicoot Loop GIF by Xbox.gif" type="video/mp4">
   </video>
   <audio autoplay loop>
-    <source src="DonkeyKongMusicEdition.mp4 ‐ Feito com o Clipchamp.mp4" type="">
+    <source src="CrashBandicootMusicBackGroud.mp4" type="">
   </audio>
 <div class="fundo">
-  <img src="which-donkey-kong-country-logo-semfundo-removebg-preview.png" alt="Donkey Kong Country" class="logo">
+  <img src="crash_shadowfinal_rgb_logo_r_final.png" alt="Donkey Kong Country" class="logo">
 </div>
 
 <div class="menu">
@@ -25,5 +25,27 @@
   </button>
 </div>
   
+<!-- Modal de C -->
+<div id="creditModal" class="modal">
+  <div class="modal-content">
+    <p>Créditos do Projeto</p>
+    <p>Desenvolvedores: Lucas Leite, Lucas Cardoso e Leonardo Lopes.</p>
+    <button class="close-btn" onclick="fecharCreditos()">Fechar</button>
+  </div>
+</div>
+
+<script>
+  // Abre o modal
+  document.querySelectorAll('.btn')[1].addEventListener('click', function () {
+    document.getElementById('creditModal').style.display = 'flex';
+  });
+
+  // Fecha o modal
+  function fecharCreditos() {
+    document.getElementById('creditModal').style.display = 'none';
+  }
+</script>
+
+
 </body>
 </html>
