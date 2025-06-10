@@ -53,7 +53,7 @@ inimigoBagugado.volume = 0.3
 let musicaDeFundoMuitoFoda;
 
 function carregarMusicaMuitoFoda() {
-  musicaDeFundoMuitoFoda = new Audio('../audio/donkeykongostf.mp3');
+  musicaDeFundoMuitoFoda = new Audio('../audio/donkeykongostf.mp3'); // Top 10 melhores musicas de todos os tempos
   musicaDeFundoMuitoFoda.load();
   musicaDeFundoMuitoFoda.volume = 0.8;
   musicaDeFundoMuitoFoda.loop = true;
@@ -167,6 +167,8 @@ let player = new Player({
   velocity: { x: 0, y: 0 },
 });
 
+let isGameOver = false;
+
 let winScreen = new Win({});
 
 // let gameOverScreen = new GameOver({});
@@ -207,7 +209,7 @@ let isPaused;
 // Chame isso antes de iniciar o jogo:
 aguardarInteracaoParaAudio();
 
-function init() {  
+function init() {
   itens = []
   itensCount = 0
   itenUI = new Sprite({
@@ -254,7 +256,7 @@ function init() {
         )
       }
     })
-    
+
   })
 
   player = new Player({
@@ -463,13 +465,40 @@ let camera = {
 };
 
 timerInterval = setInterval(() => {
-  if (timerCount > 0) {
+  if (!isPaused && !isGameOver) {
     timerCount--;
+    if (timerCount <= 0) {
+      timerCount = 0;
+      // Acabou o tempo: encerrar jogo
+      clearInterval(timerInterval);
+      // Marcar Game Over
+      isGameOver = true;
+      isPaused = true;
+      // Pausar áudio, etc., se necessário:
+      if (musicaDeFundoMuitoFoda) musicaDeFundoMuitoFoda.pause();
+      // Exibir overlay:
+      mostrarTelaGameOver();
+    }
   }
 }, 1000);
 
+function mostrarTelaGameOver() {
+  const gameOverScreen = document.getElementById('gameOverScreen');
+  gameOverScreen.style.visibility = 'visible';
+  gameOverScreen.style.opacity = '1';
+  musicaDeFundoMuitoFoda.pause();
+  player.runSound.pause();
+  player.jumpSound.pause();
+}
+
+
+function reiniciarJogo() {
+  window.location.reload()
+}
+
+
 function animate(backgroundCanvas) {
-  if (isPaused) return;
+  if (isPaused || isGameOver) return;
   // Calculate delta time
   const currentTime = performance.now();
   const deltaTime = (currentTime - lastTime) / 1000;
@@ -518,7 +547,10 @@ function animate(backgroundCanvas) {
         if (!player.isInvincible && fullHearts.length > 0) {
           fullHearts[fullHearts.length - 1].depleted = true
         } else if (fullHearts.length === 0) {
-          init()
+          isGameOver = true;
+          isPaused = true;
+          musicaDeFundoMuitoFoda.pause();
+          mostrarTelaGameOver();
         }
         player.setIsInvincible();
       }
@@ -612,7 +644,10 @@ function animate(backgroundCanvas) {
         if (!player.isInvincible && fullHearts.length > 0) {
           fullHearts[fullHearts.length - 1].depleted = true
         } else if (fullHearts.length === 0) {
-          init()
+          isGameOver = true;
+          isPaused = true;
+          musicaDeFundoMuitoFoda.pause();
+          mostrarTelaGameOver();
         }
         player.setIsInvincible();
       }
@@ -730,12 +765,9 @@ function animate(backgroundCanvas) {
   if (itens.length === 0) {
     winScreen.draw(c);
   }
-  if (hearts.length === 0) {
-    deathScreen.draw(c);
-  }
 
   itenUI.draw(c)
-  
+
 
   document.fonts.load('10px "Pixeled"').then(() => {
     c.font = '15px "Pixeled"';
@@ -743,7 +775,7 @@ function animate(backgroundCanvas) {
     c.fillText(itensCount, 80, 115)
     c.fillText('Tempo: ' + timerCount, 700, 50);
   });
-  
+
   c.restore()
 
   requestAnimationFrame(() => animate(backgroundCanvas));
