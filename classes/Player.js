@@ -54,6 +54,13 @@ class Player {
         height: 32,
         frames: 1,
       },
+      death: {
+        x: 0,
+        y: 32 * 4,
+        width: 33,
+        height: 32,
+        frames: 2,
+      }
     }
     this.currentSprite = this.sprites.idle
     this.facing = 'right'
@@ -225,6 +232,13 @@ class Player {
       // Win
       this.currentFrame = 0
       this.currentSprite = this.sprites.win
+    } else if (
+      hearts.length === 0 &&
+      this.currentSprite !== this.sprites.death
+    ) {
+      // Win
+      this.currentFrame = 0
+      this.currentSprite = this.sprites.death
     }
   }
 

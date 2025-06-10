@@ -169,6 +169,8 @@ let player = new Player({
 
 let winScreen = new Win({});
 
+// let gameOverScreen = new GameOver({});
+
 let oposums = []
 
 let eagles = []
@@ -222,6 +224,8 @@ function init() {
       frames: 5,
     },
   })
+
+  timerCount = 90;
 
   l_Itens.forEach((row, y) => {
     row.forEach((symbol, x) => {
@@ -457,6 +461,12 @@ let camera = {
   x: 0,
   y: -(canvas.clientHeight * 0.44),
 };
+
+timerInterval = setInterval(() => {
+  if (timerCount > 0) {
+    timerCount--;
+  }
+}, 1000);
 
 function animate(backgroundCanvas) {
   if (isPaused) return;
@@ -720,8 +730,20 @@ function animate(backgroundCanvas) {
   if (itens.length === 0) {
     winScreen.draw(c);
   }
+  if (hearts.length === 0) {
+    deathScreen.draw(c);
+  }
+
   itenUI.draw(c)
-  c.fillText(itensCount, 33, 46)
+  
+
+  document.fonts.load('10px "Pixeled"').then(() => {
+    c.font = '15px "Pixeled"';
+    c.fillStyle = 'white';
+    c.fillText(itensCount, 80, 115)
+    c.fillText('Tempo: ' + timerCount, 700, 50);
+  });
+  
   c.restore()
 
   requestAnimationFrame(() => animate(backgroundCanvas));
